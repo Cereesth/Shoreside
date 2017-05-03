@@ -129,7 +129,7 @@ class Shoreside
       else if(e.getButton() == MouseEvent.BUTTON1){
         if(keepMe != null){
           if(keepMe.getKeyChar() == '1'){
-            System.out.println("Boat 1 should move");
+            //System.out.println("Boat 1 should move");
             m.setDestinationBoat(e.getX(), e.getY(), 0);
             //Reset keepMe to null
             keepMe = null;
