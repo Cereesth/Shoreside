@@ -18,29 +18,6 @@ class Shoreside
     return;
   }
 
-  public char menuChoice(Scanner in)
-  {
-    String input;
-    char pInput;
-
-    System.out.println("Here are you options:");
-    System.out.println();
-    System.out.println("Enter 'f' to enter Fleet Command Mode");
-    System.out.println();
-    System.out.println("Enter '1', '2', '3', '4' to select an individual boat and enter Boat Command Mode");
-    System.out.println();
-
-    input = in.nextLine();
-
-    //Process input for a the char
-    //Should be one char
-    pInput = input.charAt(0);
-
-    return pInput;
-  }
-
-  //TODO
-  //Mark's old gpsConverter. Needs to be updated using the website.
   public String gpsConverter(int x, int y)
 	{
 
@@ -48,8 +25,8 @@ class Shoreside
 		double new_y = 15.5 - (.0106299213*(double)y);
 		String gps_x = "948"+ Double.toString(new_x);
 		String gps_y = "368"+ Double.toString(new_y);
-		System.out.println(gps_y);
-		System.out.println(gps_x);
+		//System.out.println(gps_y);
+		//System.out.println(gps_x);
 
 		return "";
 	}
