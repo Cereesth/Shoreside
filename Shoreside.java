@@ -39,10 +39,10 @@ class Shoreside
 		String finalGPSX;
 		String finalGPSY;
 
-		newX = 26.1 - (0.0095698925*(double)x);
-		newY = 15.5 - (0.0106299213*(double)y);
-		gpsX = "948"+ Double.toString(newX);
-		gpsY = "368"+ Double.toString(newY);
+		newX = 0.1405833333 - (0.000002658303441*(double)x);
+		newY = 0.1375488889 - (0.000002952755906*(double)y);
+		gpsX = 94 + newX;
+		gpsY = 36 + newY;
 		finalGPSX = gpsX.substring(0, 9);
 		finalGPSY = gpsY.substring(0, 9);
 
@@ -169,7 +169,7 @@ class Shoreside
 
     while(true){
       //Poll boats
-      s.pollMessages(xbm);
+      //s.pollMessages(xbm);
 
       //Check for MouseEvent and KeyEvents first
       //System.out.println("LLLLOOOOPPP");
@@ -204,7 +204,7 @@ class Shoreside
       else if(e.getButton() == MouseEvent.BUTTON1){
         if(keepMe != null){
           if(keepMe.getKeyChar() == '1'){
-            System.out.println("Boat 1 should move");
+            //System.out.println("Boat 1 should move");
             m.setDestinationBoat(e.getX(), e.getY(), 0);
             s.gpsConverter(e.getX(), e.getY());
             //Reset keepMe to null

@@ -28,7 +28,7 @@ public class View extends JFrame implements ActionListener {
 		// Make the game window
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("Shoreside");
-		this.setSize(930, 762);
+		this.setSize(943, 760);
 		this.panel = new MyPanel();
 		//MAGIC
 		this.panel.setFocusable(true);
