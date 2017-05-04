@@ -1,13 +1,22 @@
-import java.util.Scanner;
 import javax.swing.Timer;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 class Shoreside
 {
+  class Boat
+  {
+    int id;
+    String XbeeId;
+
+    Boat(int idIn, String XbeeIdIn)
+    {
+      id = idIn;
+      XbeeId = XbeeIdIn;
+    }
+  }
+
   private void initMessage()
   {
     System.out.println();
@@ -18,51 +27,106 @@ class Shoreside
     return;
   }
 
-  public char menuChoice(Scanner in)
-  {
-    String input;
-    char pInput;
-
-    System.out.println("Here are you options:");
-    System.out.println();
-    System.out.println("Enter 'f' to enter Fleet Command Mode");
-    System.out.println();
-    System.out.println("Enter '1', '2', '3', '4' to select an individual boat and enter Boat Command Mode");
-    System.out.println();
-
-    input = in.nextLine();
-
-    //Process input for a the char
-    //Should be one char
-    pInput = input.charAt(0);
-
-    return pInput;
-  }
-
   //TODO
-  //Mark's old gpsConverter. Needs to be updated using the website.
-  public String gpsConverter(int x, int y)
+  //Equation needs updated
+  public void gpsConverter(int x, int y)
 	{
 
-		double new_x = 26.1 - (.0095698925*(double)x);
-		double new_y = 15.5 - (.0106299213*(double)y);
-		String gps_x = "948"+ Double.toString(new_x);
-		String gps_y = "368"+ Double.toString(new_y);
-		System.out.println(gps_y);
-		System.out.println(gps_x);
+		double newX;
+		double newY;
+		String gpsX;
+		String gpsY;
+		String finalGPSX;
+		String finalGPSY;
 
-		return "";
+		newX = 26.1 - (0.0095698925*(double)x);
+		newY = 15.5 - (0.0106299213*(double)y);
+		gpsX = "948"+ Double.toString(newX);
+		gpsY = "368"+ Double.toString(newY);
+		finalGPSX = gpsX.substring(0, 9);
+		finalGPSY = gpsY.substring(0, 9);
+
+		//System.out.println(gpsX.length());
+		//System.out.println(gpsY.length());
+		//System.out.println(finalGPSX.length());
+		//System.out.println(finalGPSY.length());
+
+
+		//System.out.println(gpsY);
+		//System.out.println(gpsX);
+		System.out.println(finalGPSX);
+		System.out.println(finalGPSY);
+
+		//return "";
+
 	}
+
+  	public void sendBroadcast(String message, XBeeManager xbm)
+  	{
+  		if(message == null){
+  			System.out.println("Don't BROADCAST null messages");
+  		}
+  		else{
+  			xbm.broadcast(message);
+  			System.out.println("Broadcasted: " + message);
+  		}
+  	}
+
+  	public void sendBoatDest(String dest, int id)
+  	{
+      //TODO
+  	}
+
+  	public void pollMessages(XBeeManager xbm)
+  	{
+      //TODO
+      String[] message;
+      message = null;
+
+      //message = xbm.getMessages();
+
+      //TODO
+      //Handle null message how?
+      if(message == null){
+        System.out.println("Null Message");
+        return;
+      }
+
+      //Parse Data from message
+      this.parseData(message[0]);
+
+      return;
+
+  	}
+
+    public void addBoat()
+    {
+
+    }
+
+    public void parseData(String in)
+    {
+      //If boat
+        //if boat exists
+          //update boat coordinates
+        //else
+          //add new boat to arraylist
+      //else if obstacle
+        //if obstacle already exists
+          //Just say it already exists in terminal
+        //Add new obstacle
+
+    }
 
   public static void main(String[] args) throws Exception
   {
     //Local Variables
-    Scanner in;
     Shoreside s;
-    char choice;
     Controller c;
     Model m;
     KeyEvent keepMe;
+    XBeeManager xbm;
+    ArrayList<Boat> boats;
 
     //Initialize the Controller
     c = new Controller();
@@ -86,8 +150,14 @@ class Shoreside
     //Initialize a Shoreside object
     s = new Shoreside();
 
+    //Initialize XBeeManager
+    xbm = new XBeeManager();
+
     //Initialize keepMe to null
     keepMe = null;
+
+    //Initialize boats arraylist
+    boats = new ArrayList<Boat>();
 
     //Initialize scanner to read in from the command line
     //in = new Scanner(System.in);
@@ -95,7 +165,12 @@ class Shoreside
     //Print initial message
     s.initMessage();
 
+
+
     while(true){
+      //Poll boats
+      s.pollMessages(xbm);
+
       //Check for MouseEvent and KeyEvents first
       //System.out.println("LLLLOOOOPPP");
       KeyEvent k = c.nextKeyEvent();
@@ -129,35 +204,36 @@ class Shoreside
       else if(e.getButton() == MouseEvent.BUTTON1){
         if(keepMe != null){
           if(keepMe.getKeyChar() == '1'){
-            //System.out.println("Boat 1 should move");
+            System.out.println("Boat 1 should move");
             m.setDestinationBoat(e.getX(), e.getY(), 0);
+            s.gpsConverter(e.getX(), e.getY());
             //Reset keepMe to null
             keepMe = null;
           }
           else if(keepMe.getKeyChar() == '2'){
             m.setDestinationBoat(e.getX(), e.getY(), 1);
+            s.gpsConverter(e.getX(), e.getY());
             //Reset keepMe to null
             keepMe = null;
           }
           else if(keepMe.getKeyChar() == '3'){
             m.setDestinationBoat(e.getX(), e.getY(), 2);
+            s.gpsConverter(e.getX(), e.getY());
             //Reset keepMe to null
             keepMe = null;
           }
           else if(keepMe.getKeyChar() == '4'){
             m.setDestinationBoat(e.getX(), e.getY(), 3);
+            s.gpsConverter(e.getX(), e.getY());
             //Reset keepMe to null
             keepMe = null;
           }
         }
       }
       else if(e.getButton() == MouseEvent.BUTTON3){
-        //System.out.println("Right click");
+    	  //System.out.println("Right click");
 				m.setDestinationFleet(e.getX(), e.getY());
-			}
-      //System.out.println("Made it");
-
-      //System.out.println("End of Loop");
+      }
 
       c.update();
     }
